@@ -43,11 +43,12 @@ pub fn (sp SApp) del() {
 pub fn (mut sp SApp) run() {
 	mut quit := false
 	mut sw := time.new_stopwatch()
-	frametime := 17
+	frametime := 20
 
 	sw.start()
 	for {
-		if sw.elapsed().milliseconds() % frametime == 0 {
+		if sw.elapsed().milliseconds() > frametime {
+			sw.pause()
 			event := sdl.Event{}
 
 			for 0 < sdl.poll_event(&event) {
@@ -72,6 +73,7 @@ pub fn (mut sp SApp) run() {
 			}
 
 			sdl.render_present(sp.renderer)
+			sw.restart()
 		}
 	}
 }
